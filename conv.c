@@ -1,33 +1,83 @@
 #include <stdio.h>
 #include <math.h>
 
-main () {
-  double lon1, lon2, lat1, lat2, ran1, ran2, bar;
-  double a, dlon, dlat;
-  double sin(double);
-  double cos(double);
-  double acos(double);
-  double atan2(double, double);
-  double pow(double, double);
-  double sqrt(double);
+int g2r (double, double, double, double, double*, double*);
+int r2g (double, double, double, double, double*, double*);
 
-  double const pi = 4 * atan(1.);
-  double const R = 6371.;
+double const R = 6371.;
 
-  lat1 = 37.; lat2 = 18.;
-  lon1 = 75.; lon2 = 66.;
+void main () {
+
+  int mode, ind = 1;
+  double lon1, lon2, lat1, lat2, ran, bar;
+
+  printf ("------------------------\n  Enter the mode of converion (1 or 2)\n");
+  printf ("  1 for gis to radar (input: lat1, lon1, lat2, lon2; output: range, bearing)\n");
+  printf ("  2 for radar to gis (input: lat1, lon1, range, bearing; output: lat2, lon2)\n");
+
+  while (ind) {
+
+    printf ("------------------------\n  Enter mode: ");
+    scanf("%d", &mode);
+
+    if (mode == 1) {
+      printf("  Enter lat1, lon1, lat2, lon2, separated by white space: ");
+      scanf("%lf%lf%lf%lf", &lat1, &lon1, &lat2, &lon2);
+
+      g2r (lat1, lon1, lat2, lon2, &ran, &bar);
+      printf ("\n  range = %6.2lf, bearing = %6.2lf\n\n", ran, bar);
+    }
+
+    else if (mode == 2) {
+      printf("  Enter lat1, lon1, range, bearing, separated by white space: ");
+      scanf("%lf%lf%lf%lf", &lat1, &lon1, &ran, &bar);
+
+      r2g (lat1, lon1, ran, bar, &lat2, &lon2);
+      printf ("\n  lat2 = %6.2lf, lon2 = %6.2lf\n\n", lat2, lon2);
+    }
+    else { printf ("  Wrong input\n"); }
+
+    printf("  Repeat? (1=yes, 0=no) : ");
+    scanf("%d", &ind);
+  }
+  printf("  Good bye!\n");
+}
+
+int g2r(double lat1, double lon1, double lat2, double lon2, double* ran, double* bar) {
+
+  double dlat, dlon;
+
+  lat1 *= M_PI/180;
+  lat2 *= M_PI/180;
+  lon1 *= M_PI/180;
+  lon2 *= M_PI/180;
 
   dlon = lon2 - lon1;
   dlat = lat2 - lat1;
 
-  ran1 = acos( sin(lat1)*sin(lat2) + cos(lat1)*cos(lat2)*cos(dlon) ) * R;
+  *ran = acos( sin(lat1)*sin(lat2) + cos(lat1)*cos(lat2)*cos(dlon) ) * R;
 
-//  a = pow(sin(dlat/2),2) + cos(lat1)*cos(lat2) * pow(sin(dlon/2),2);
-//  ran2 = R * 2*atan2( sqrt(a), sqrt(1.-a) );
+  *bar = atan2( sin(dlon)*cos(lat2), cos(lat1)*sin(lat2) - sin(lat1)*cos(lat2)*cos(dlon/2) );
+  *bar = *bar * 180./M_PI + 360;
+  if (*bar > 360) { *bar -= 360; }
+}
 
-  bar = atan2( sin(dlon)*cos(lat2), cos(lat1)*sin(lat2) - sin(lat1)*cos(lat2)*cos(dlon/2) );
-  bar = bar * 180./pi + 360;
-  if (bar > 360) { bar -= 360; }
+int r2g(double lat1, double lon1, double ran, double bar, double* lat2, double* lon2) {
 
-  printf ("%lf\t%lf\t%lf\n", ran1, bar);
+  double dlat, dlon;
+
+  lat1 *= M_PI/180;
+  lon1 *= M_PI/180;
+  ran = ran / R;
+  bar *= M_PI/180.;
+
+  *lat2 = asin( sin(lat1)*cos(ran) + cos(lat1)*sin(ran)*cos(bar) );
+
+//  *lon2 = lon1 - asin( sin(bar)*sin(ran)/cos(*lat2) );
+  *lon2 = lon1 - atan2( sin(bar)*sin(ran)*cos(lat1), cos(ran)-sin(lat1)*sin(*lat2) );
+
+  *lat2 *= 180./M_PI;
+  *lon2 *= 180./M_PI;
+  if (*lon2 > 360) { *bar -= 360; }
+  if (*lon2 < 0) { *bar += 360; }
 }
