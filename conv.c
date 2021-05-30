@@ -45,7 +45,7 @@ void main () {
 
 int g2r(double lat1, double lon1, double lat2, double lon2, double* ran, double* bar) {
 
-  double dlat, dlon;
+  double dlon;
 
   lat1 *= M_PI/180;
   lat2 *= M_PI/180;
@@ -53,7 +53,6 @@ int g2r(double lat1, double lon1, double lat2, double lon2, double* ran, double*
   lon2 *= M_PI/180;
 
   dlon = lon2 - lon1;
-  dlat = lat2 - lat1;
 
   *ran = acos( sin(lat1)*sin(lat2) + cos(lat1)*cos(lat2)*cos(dlon) ) * R;
 
@@ -64,20 +63,16 @@ int g2r(double lat1, double lon1, double lat2, double lon2, double* ran, double*
 
 int r2g(double lat1, double lon1, double ran, double bar, double* lat2, double* lon2) {
 
-  double dlat, dlon;
-
   lat1 *= M_PI/180;
   lon1 *= M_PI/180;
   ran = ran / R;
   bar *= M_PI/180.;
 
   *lat2 = asin( sin(lat1)*cos(ran) + cos(lat1)*sin(ran)*cos(bar) );
+  *lat2 *= 180./M_PI;
 
 //  *lon2 = lon1 - asin( sin(bar)*sin(ran)/cos(*lat2) );
   *lon2 = lon1 - atan2( sin(bar)*sin(ran)*cos(lat1), cos(ran)-sin(lat1)*sin(*lat2) );
-
-  *lat2 *= 180./M_PI;
-  *lon2 *= 180./M_PI;
-  if (*lon2 > 360) { *bar -= 360; }
-  if (*lon2 < 0) { *bar += 360; }
+  *lon2 = *lon2 * 180./M_PI + 360;
+  if (*lon2 > 360) { *lon2 -= 360; }
 }
