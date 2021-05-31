@@ -8,7 +8,7 @@ double const R = 6371.;
 
 void main () {
 
-  int mode, ind = 1;
+  int mode, ind = 2;
   double lon1, lon2, lat1, lat2, ran, bar;
 
   printf ("------------------------\n  Enter the mode of converion (1 or 2)\n");
@@ -20,6 +20,7 @@ void main () {
     printf ("------------------------\n  Enter mode: ");
     scanf("%d", &mode);
 
+    if (ind == 2) { printf("  Enter lat & lon in degrees without N/W/E/W; Use negative numbers for S/W.\n"); }
     if (mode == 1) {
       printf("  Enter lat1, lon1, lat2, lon2, separated by white space: ");
       scanf("%lf%lf%lf%lf", &lat1, &lon1, &lat2, &lon2);
@@ -58,7 +59,7 @@ int g2r(double lat1, double lon1, double lat2, double lon2, double* ran, double*
 
   *bar = atan2( sin(dlon)*cos(lat2), cos(lat1)*sin(lat2) - sin(lat1)*cos(lat2)*cos(dlon/2) );
   *bar = *bar * 180./M_PI + 360;
-  if (*bar > 360) { *bar -= 360; }
+  if (*bar >= 360) { *bar -= 360; }
 }
 
 int r2g(double lat1, double lon1, double ran, double bar, double* lat2, double* lon2) {
@@ -71,8 +72,7 @@ int r2g(double lat1, double lon1, double ran, double bar, double* lat2, double* 
   *lat2 = asin( sin(lat1)*cos(ran) + cos(lat1)*sin(ran)*cos(bar) );
   *lat2 *= 180./M_PI;
 
-//  *lon2 = lon1 - asin( sin(bar)*sin(ran)/cos(*lat2) );
-  *lon2 = lon1 - atan2( sin(bar)*sin(ran)*cos(lat1), cos(ran)-sin(lat1)*sin(*lat2) );
+  *lon2 = lon1 + atan2( sin(bar)*sin(ran)*cos(lat1), cos(ran)-sin(lat1)*sin(*lat2) );
   *lon2 = *lon2 * 180./M_PI + 360;
-  if (*lon2 > 360) { *lon2 -= 360; }
+  while (*lon2 >= 360) { *lon2 -= 360; }
 }
