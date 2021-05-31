@@ -24,7 +24,6 @@ The following is displayed:
   1 for gis to radar (input: lat1, lon1, lat2, lon2; output: range, bearing)
   2 for radar to gis (input: lat1, lon1, range, bearing; output: lat2, lon2)
 ------------------------
-
   Enter mode: 
 ```
 Enter 1 or 2. For initial running, instruction on lat and lon input (second line below) is shown.
