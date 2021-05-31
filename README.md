@@ -1,15 +1,15 @@
 # Conversion between GIS and Radar coordinate systems
-`conv.c` is a tool for conversion between GIS (lat, lon) and Radar (range, bearing) coordinates. Latitude is in degrees in [-90.:90.]. Longitude can be either in [0.:360.] or in [-180.:180] as long as consistency is maintained. Range is the distance along the great circle of the globe, while bearing is the angle from the true north in [0.:360.] measured clockwise.
+`conv.c` is a tool for conversion between GIS (lat, lon) and Radar (range, bearing) coordinates. Latitude is in [-90.:90.]; longitude can be either in [0.:360.] or in [-180.:180] as long as consistency is maintained. Range is the distance along the great circle of the globe, while bearing is the angle from the true north in [0.:360.] measured clockwise.
 
 # Method
-For GIS to Radar conversion, the following formula in http://www.anycalculator.com/longitude.htm is used:
+For GIS to Radar conversion, the following formula in [1] is used:
 ```
 // R = Earth’s radius
 dlon = lon2 – lon1;
 ran = acos( sin(lat1)*sin(lat2) + cos(lat1)*cos(lat2)*cos(dlon) ) * R;
 bar = atan2( sin(dlon)*cos(lat2), cos(lat1)*sin(lat2) - sin(lat1)*cos(lat2)*cos(dlon/2) );
 ```
-For Radar to GIS conversion, the formula in https://gis.stackexchange.com/questions/5821/calculating-latitude-longitude-x-miles-from-point is used with modification:
+For Radar to GIS conversion, the formula in [1] is used with modification:
 ```
 lat2 = asin( sin(lat1)*cos(ran) + cos(lat1)*sin(ran)*cos(bar) );
 lon2 = lon1 + atan2( sin(bar)*sin(ran)*cos(lat1), cos(ran)-sin(lat1)*sin(lat2) );
@@ -65,3 +65,8 @@ For additional test:
 
   Repeat? (1=yes, 0=no) :
 ```
+
+# Reference
+[1] http://www.anycalculator.com/longitude.htm 
+
+[2] https://gis.stackexchange.com/questions/5821/calculating-latitude-longitude-x-miles-from-point
