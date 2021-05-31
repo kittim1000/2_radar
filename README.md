@@ -9,7 +9,7 @@ dlon = lon2 – lon1;
 ran = acos( sin(lat1)*sin(lat2) + cos(lat1)*cos(lat2)*cos(dlon) ) * R;
 bar = atan2( sin(dlon)*cos(lat2), cos(lat1)*sin(lat2) - sin(lat1)*cos(lat2)*cos(dlon/2) );
 ```
-For Radar to GIS conversion, the formula in [1] is used with modification:
+For Radar to GIS conversion, the formula in [2] is used with modification:
 ```
 lat2 = asin( sin(lat1)*cos(ran) + cos(lat1)*sin(ran)*cos(bar) );
 lon2 = lon1 + atan2( sin(bar)*sin(ran)*cos(lat1), cos(ran)-sin(lat1)*sin(lat2) );
