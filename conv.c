@@ -70,9 +70,11 @@ int r2g(double lat1, double lon1, double ran, double bar, double* lat2, double* 
   bar *= M_PI/180.;
 
   *lat2 = asin( sin(lat1)*cos(ran) + cos(lat1)*sin(ran)*cos(bar) );
-  *lat2 *= 180./M_PI;
 
+//  *lon2 = lon1 + asin( sin(bar)*sin(ran)/cos(*lat2) );
   *lon2 = lon1 + atan2( sin(bar)*sin(ran)*cos(lat1), cos(ran)-sin(lat1)*sin(*lat2) );
+
+  *lat2 *= 180./M_PI;
   *lon2 = *lon2 * 180./M_PI + 360;
-  while (*lon2 >= 360) { *lon2 -= 360; }
+  while (*lon2 > 180) { *lon2 -= 360; }
 }
