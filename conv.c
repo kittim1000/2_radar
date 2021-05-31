@@ -20,7 +20,7 @@ void main () {
     printf ("------------------------\n  Enter mode: ");
     scanf("%d", &mode);
 
-    if (ind == 2) { printf("  Enter lat & lon in degrees without N/W/E/W; Use negative numbers for S/W.\n"); }
+    if (ind == 2) { printf("  Enter lat & lon in degrees without N/S/E/W; Use negative numbers for S/W.\n"); }
     if (mode == 1) {
       printf("  Enter lat1, lon1, lat2, lon2, separated by white space: ");
       scanf("%lf%lf%lf%lf", &lat1, &lon1, &lat2, &lon2);
