@@ -1,5 +1,7 @@
 # Conversion between GIS and Radar coordinate systems
-`conv.c` is a tool for conversion between GIS (lat, lon) and Radar (range, bearing) coordinates. Latitude is in [-90.:90.]; longitude can be either in [0.:360.] or in [-180.:180] as long as consistency is maintained. Range is the distance along the great circle of the globe, while bearing is the angle from the true north in [0.:360.] measured clockwise.
+`conv.c` is a tool for conversion between GIS (lat, lon) and Radar (range, bearing) coordinates. 
+Latitude and Longitude are in [-90.:90.] and [-180:180] respectively, but [0.:360.] also works for the latter as long as consistency is maintained.
+Range is the distance in km along the great circle of the globe, while bearing is the angle from the true north in [0.:360.] measured clockwise.
 
 ## Method
 For GIS to Radar conversion, the following formula in [1] is used:
