@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <math.h>
 
-int g2r (double, double, double, double, double*, double*);
-int r2g (double, double, double, double, double*, double*);
+int g2r (double, double, double, double, double*, double*); // GIS to Radar
+int r2g (double, double, double, double, double*, double*); // Radar to GIS
 
-double const R = 6371.;
+double const R = 6371.; // Earth's radius (km)
 
 void main () {
 
